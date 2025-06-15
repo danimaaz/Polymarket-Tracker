@@ -12,3 +12,22 @@ The purpose of this data engineering project is to provide users a centralized v
 
 # 1 - The ETL Pipeline: 
 
+## Architecture Diagaram:
+![data architecture june 15](https://github.com/user-attachments/assets/299e5675-d50b-42c3-9a7f-525d31617ee6)
+
+
+Above, you can see the general flow of the project. Nelow, I have detailed all the relevant steps:
+
+#Step I - Extraction
+
+The first step was *extracting* the relevant data from the Binance and Polymarket APIs. These are both public APIs created and managed by the enterprises, respectively. I used a Python Script to extract the data.
+
+#Step II - Transform
+
+The second step was transforming the data. After the initial Python script to extract the raw data from Binance and Polymarket was created, I used Airflow as an orchestration tool. The purpose of Airflow is to establish a DAG (Directed acyclic graph). The purpose of a DAG is to define specifically which tasks should be run in which order. Within the DAG I specified, I ran both Python and SQL transformations on the raw data, so I could create numerous useful tables for the end-user to use.
+
+#Step III - Load
+
+Finally, after the DAG was established, I was ready to load all of the data into PostgreSQL. I used DBeaver to access the database locally on my computer. However, this project can be migrated to cloud storage. 
+
+Once the tables were loaded into my local database, I was then able to create a small visualization layer for the end user to explore the data. For the visualization layer, I used Streamlit. However, users trying to attempt this project can also use other visualization tools such as Looker and Tableau. I also used Ngrok to host the Streamlit online, while the data is hosted strictly on my local computer. 
