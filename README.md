@@ -12,11 +12,11 @@ The purpose of this data engineering project is to provide users a centralized v
 
 # 1 - The ETL Pipeline: 
 
-## Architecture Diagaram:
+## Architecture Diagram:
 ![data architecture june 15](https://github.com/user-attachments/assets/299e5675-d50b-42c3-9a7f-525d31617ee6)
 
 
-Above, you can see the general flow of the project. Nelow, I have detailed all the relevant steps:
+Above, you can see the overall project flow. Below, I have detailed all the relevant steps:
 
 #Step I - Extraction
 
@@ -24,10 +24,20 @@ The first step was *extracting* the relevant data from the Binance and Polymarke
 
 #Step II - Transform
 
-The second step was transforming the data. After the initial Python script to extract the raw data from Binance and Polymarket was created, I used Airflow as an orchestration tool. The purpose of Airflow is to establish a DAG (Directed acyclic graph). The purpose of a DAG is to define specifically which tasks should be run in which order. Within the DAG I specified, I ran both Python and SQL transformations on the raw data, so I could create numerous useful tables for the end-user to use.
+The second step was transforming the data. After the initial Python script to extract the raw data from Binance and Polymarket was created, I used Airflow as an orchestration tool. The purpose of Airflow is to establish a Directed Acyclic Graph (DAG). The purpose of a DAG is to define specifically which tasks should be run in which order. Within the DAG I specified, I ran both Python and SQL transformations on the raw data, so I could create numerous useful tables for the end-user to use.
 
 #Step III - Load
 
 Finally, after the DAG was established, I was ready to load all of the data into PostgreSQL. I used DBeaver to access the database locally on my computer. However, this project can be migrated to cloud storage. 
 
-Once the tables were loaded into my local database, I was then able to create a small visualization layer for the end user to explore the data. For the visualization layer, I used Streamlit. However, users trying to attempt this project can also use other visualization tools such as Looker and Tableau. I also used Ngrok to host the Streamlit online, while the data is hosted strictly on my local computer. 
+Once the tables were loaded into my local database, I was then able to create a small visualization layer for the end user to explore the data. For the visualization layer, I used Streamlit. However, users attempting this project can also use other visualization tools, such as Looker and Tableau. I also used Ngrok to host the Streamlit online, while the data is hosted strictly on my local computer. 
+
+# 2 - API Integration
+
+What is the purpose of using specifically Binance and Polymarket data? 
+
+The idea for this project initially was to create a rough Bitcoin sentiment graph. So I can see the general market sentiment on Bitcoin. Polymarket is a crypto-based prediction market. Meaning that users buy or sell futures that hinge on a particular event happening. This effectively makes it a bookmaker. The way prices are quoted (1 share yielding $1 if successful) deems it a good substitute for the *probability* that an event will happen. Thus, I integrated the Polymarket API to primarily get this data. 
+
+I integrated the Binance API data to get real-time data on how the orderbook of BTC USDC is moving. Using that data, I was able to classify whether a particular prediction market is bullish or bearish. 
+
+
