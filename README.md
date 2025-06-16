@@ -40,4 +40,40 @@ The idea for this project initially was to create a rough Bitcoin sentiment grap
 
 I integrated the Binance API data to get real-time data on how the orderbook of BTC USDC is moving. Using that data, I was able to classify whether a particular prediction market is bullish or bearish. 
 
+# 3 - PostgreSQL Storage
 
+PostgreSQL is an open-source *relational* database that is being used as this project's data storage layer. It was chosen due to its ability to support the structured data coming from the APIs being used, its ability to handle JSON-type columns, and the low cost associated with it. 
+
+All the raw and transformed data from this project gets loaded onto a *local* PostgreSQL storage container. 
+
+## Stored Tables Overview
+
+Raw Data: 
+
+The backbone of this project is based on the loading of these three raw tables:
+
+polymarket_market_data_raw: This table is primarily an information table containing details on all the markets, both past and present, listed on Polymarket.
+
+polymarket_orderbooks_data_raw: This table is a *snapshot* in time of all the Orderbooks currently available in Polymarket.
+
+binance_orderbook_raw: This table is a *snapshot* in time of the BTC USDC orderbook from Binance. 
+
+
+Using the 3 raw data tables, we can transform them into multiple useful tables for stakeholders to use.
+
+Transformed Data: 
+
+
+polymarket_market_data_full: A functional copy of polymarket_market_data_raw where the columns are converted into usable SQL formats.
+
+polymarket_orderbooks_data_full: A functional copy of polymarket_orderbooks_data_raw where the columns are converted into usable SQL formats.
+
+binance_orderbook_full: A functional copy of binance_orderbook_raw where the columns are converted into usable SQL formats.
+
+polymarket_orders_full: Joining the Polymarket_market_data (information table) with the Polymarket orders data. This way, people can query only one table to get information on the orderbook and immediately see the important information on the market. 
+
+price_tracker_table: This table simplifies the Polymarket orderbook data from before. Order books tend to have dozens of bid (people who want to buy) and ask (people who want to sell) orders. The price tracker table simplifies this data by returning only 1 row per market per timestamp, where you can easily see what the best bid and ask prices are. 
+
+detecting_arbitrage_table: Given that Polymarket data is a betting market. There are sometimes instances of slight arbitrage. More specifically, when the sum of the prices of an outcome is less than $1, then users can buy all sides of the market and make a guaranteed profit. For example, if there is a particular sports match going on (Ex: Knicks vs Celtics), and the price of wagering the Knicks or Celtics will win is $0.7 and $0.2, respectively, then a user can buy both sides of the market and still come out on top. The return for a winning outcome is $1, which is greater than $0.7 + $0.2. This table tracks all instances of arbitrage opportunities on the market at the time the Data is pulled. 
+
+The specific relations between each table and the documentation on the columns will be included in ____ file of the project. 
