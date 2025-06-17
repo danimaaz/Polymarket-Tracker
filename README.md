@@ -89,4 +89,9 @@ The Dockerized environment for this project contains the following components:
  - PostgreSQL: A database container that stores all the raw and transformed data from the relevant APIs
  - Streamlit: A frontend service that enables us to launch the Polymarket Exploratory dashboard via a web interface. 
 
-# 4 - 
+# 4 - Streamlit Integration
+
+
+
+<img width="1250" alt="image" src="https://github.com/user-attachments/assets/f415f51a-c6e0-4113-9f96-24ccea9f165e" />
+
