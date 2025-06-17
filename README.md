@@ -77,3 +77,16 @@ price_tracker_table: This table simplifies the Polymarket orderbook data from be
 detecting_arbitrage_table: Given that Polymarket data is a betting market. There are sometimes instances of slight arbitrage. More specifically, when the sum of the prices of an outcome is less than $1, then users can buy all sides of the market and make a guaranteed profit. For example, if there is a particular sports match going on (Ex: Knicks vs Celtics), and the price of wagering the Knicks or Celtics will win is $0.7 and $0.2, respectively, then a user can buy both sides of the market and still come out on top. The return for a winning outcome is $1, which is greater than $0.7 + $0.2. This table tracks all instances of arbitrage opportunities on the market at the time the Data is pulled. 
 
 The specific relations between each table and the documentation on the columns will be included in ____ file of the project. 
+
+
+# 3 - Dockerized Environment
+
+This project is containerized using Docker Compose. Containerization refers to the process of packaging applications and their corresponding dependencies into a virtual environment. The purpose of containerizing a particular project is to mitigate the risk that the project will not work in one environment but will in another (e.g., the project might work on my computer but not another person's computer). 
+
+The Dockerized environment for this project contains the following components:
+
+ - Airflow: An Orchestration tool that enables the scheduling and execution of the data pipeline
+ - PostgreSQL: A database container that stores all the raw and transformed data from the relevant APIs
+ - Streamlit: A frontend service that enables us to launch the Polymarket Exploratory dashboard via a web interface. 
+
+# 4 - 
