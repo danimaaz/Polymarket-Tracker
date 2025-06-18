@@ -91,7 +91,11 @@ The Dockerized environment for this project contains the following components:
 
 # 4 - Streamlit Integration
 
-
+Finally, to complete the end-to-end nature of this project, this project also includes a visualization element in Streamlit. More specifically, the dashboard provides a quick view for visualizing Bitcoin market sentiment and prediction market analytics. A snapshot of the dashboard is below:
 
 <img width="1250" alt="image" src="https://github.com/user-attachments/assets/f415f51a-c6e0-4113-9f96-24ccea9f165e" />
 
+The dashboard is split into 5 sections:
+
+- **Sentiment Gauge**: This displays a score on the short, medium, and long-term sentiment on Bitcoin price movements on a scale from 1-100.
+- **Arbitrage Opportunities**: This displays 
