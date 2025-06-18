@@ -1,4 +1,4 @@
-# Polymarket_DE_Project
+<img width="508" alt="image" src="https://github.com/user-attachments/assets/2ac1d549-d870-4d10-82e2-7183ac6ac064" /># Polymarket_DE_Project
 A Data Engineering project. Using the Polymarket and Binance APIs to pull data into a local database. Afterwards, using said data to build numerous useful tables that users can quickly query. Tools used: Python, Airflow, Docker, PostgreSQL, Streamlit
 
 
@@ -98,4 +98,25 @@ Finally, to complete the end-to-end nature of this project, this project also in
 The dashboard is split into 5 sections:
 
 - **Sentiment Gauge**: This displays a score on the short, medium, and long-term sentiment on Bitcoin price movements on a scale from 1-100.
-- **Arbitrage Opportunities**: This displays 
+  - The way the Sentiment Score is predicted is based on the following formulas:
+   - Firstly, we separate the different 'predictions' available in Polymarket into two main groups, Bullish (where predicted price > current price) and Bearish (where predicted price < current price).
+   - We also separate the various markets on whether they are predicting the price in the short term (price within <= 7 days), Medium term (price within <= 30 days and > 7 days), or long term (price within > 30 days). 
+   - Then, we calculate what the Bullish and Bearish scores are using the following formula (note that the P(Reaching Target Price) is assumed to be the current price on Polymarket of BTC hitting the target price):
+     <img width="508" alt="image" src="https://github.com/user-attachments/assets/e4fb6096-7bda-41e8-b38c-2a5bf6fa795c" />
+
+    - Afterwards, we calculate the overall sentiment score for a particular time-frame using the following formula:
+      <img width="445" alt="image" src="https://github.com/user-attachments/assets/da7da360-25b8-45f5-8d4a-f16a700c4316" />
+    - Note that the default sentiment score starts at 50 because 50 is defined to be perfectly neutral in our gauge. A score of 1 is defined to be extremely bearish, while 100 is defined to be extremely Bullish. 
+
+ 
+- **Arbitrage Opportunities**: This displays markets at the time of the latest refresh with mispriced markets. More specifically, if the price of the two outcomes (usually defined as Yes and No) is less than $1. Then, there is an arbitrage opportunity as users can buy both sides of the market and make a guaranteed profit.
+- **Token Movers**: This view ranks the various markets (also labeled as tokens) wth the largest price movements since the last refresh.
+- **Market Spreads**: This view shows the markets with the largest bid-ask spreads. Large bid-ask spreads are usually an indicator of illiquidity or extreme uncertainty.
+- **Closing Markets**: This view displays markets that are set to conclude soon due to their time sensitivity.
+
+The Python tools used to make this dashboard were:
+- **Matplotlib**: A common  tool that was used to create the Sentiment graph.
+- **Pandas**: Used on the back-end for data-processing as well as plotting the interactive tables seen on the dashboard.
+
+  
+ 
