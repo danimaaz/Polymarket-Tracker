@@ -1,4 +1,4 @@
-<img width="508" alt="image" src="https://github.com/user-attachments/assets/2ac1d549-d870-4d10-82e2-7183ac6ac064" /># Polymarket_DE_Project
+ Polymarket_DE_Project
 A Data Engineering project. Using the Polymarket and Binance APIs to pull data into a local database. Afterwards, using said data to build numerous useful tables that users can quickly query. Tools used: Python, Airflow, Docker, PostgreSQL, Streamlit
 
 
@@ -107,6 +107,8 @@ The dashboard is split into 5 sections:
     - Afterwards, we calculate the overall sentiment score for a particular time-frame using the following formula:
       <img width="445" alt="image" src="https://github.com/user-attachments/assets/da7da360-25b8-45f5-8d4a-f16a700c4316" />
     - Note that the default sentiment score starts at 50 because 50 is defined to be perfectly neutral in our gauge. A score of 1 is defined to be extremely bearish, while 100 is defined to be extremely Bullish. 
+
+<img width="508" alt="image" src="https://github.com/user-attachments/assets/2ac1d549-d870-4d10-82e2-7183ac6ac064" />#
 
  
 - **Arbitrage Opportunities**: This displays markets at the time of the latest refresh with mispriced markets. More specifically, if the price of the two outcomes (usually defined as Yes and No) is less than $1. Then, there is an arbitrage opportunity as users can buy both sides of the market and make a guaranteed profit.
