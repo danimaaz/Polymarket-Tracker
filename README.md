@@ -124,10 +124,41 @@ The Python tools used to make this dashboard were:
 
  # 1 - SQL Table Documentation
 
- |  Column Name      | Description   | Data Type  | Primary Key? |
+|  Column Name      | Description   | Data Type  | Unique/Primary Key? |
 |:-------------:|:-------------:| :---------:| :---------:|
 | accepting_order_timestamp      | When the specific market accepted orders for the first time (denoted in Unixtime)| bigint | No |
 | accepting_orders      | Is the market currently accepting orders?     |   boolean |   No |
-| Active | Is the market currently active?     |   boolean |   No |
+| active | Is the market currently active?     |   boolean |   No |
+| archived | Is the market currently archived?     |   boolean |   No |
+| condition_id | The identifier of a specific question *and* its' possible outcomes    |   string |   Yes |
+| description | Is the market currently active?     |   boolean |   No |
+| enable_order_book  | is the orderbook enabled? |   string |   No |
+| end_date_iso  | when is the market set to close? |   bigint |   No |
+| fpmm | address of associated fixed product market maker on Polygon network |   string |   No |
+| game_start_time | For sports betting, it is when the games are scheduled to start     |   string |   No |
+| icon | link to the icon of the market |   string |   No |
+| image | link to the image of the market (usually same as icon)     |   string |   No |
+| is_50_50_outcome  | are there only two outcomes? |   boolean |   No |
+| maker_base_fee | what fee is charged for limit orders (usually 0)      |   float |   No |
+| market_slug | The end of the URL for the specific polymarket market      |   string |   No |
+| minimum_order_size  | minimum limit order size     |   integer |   No |
+| minimum_tick_size  | minimum tick size in units of implied probability (price on market)     |   float4 |   No |
+| neg_risk | is there another market that can affect this current market? |   Boolean |   No |
+| neg_risk_market_id    | If neg_risk is True, what is the market_id of said market that affects this current market |   string |   No |
+| neg_risk_request_id   | If neg_risk is True, what is the request_id of said market that affects this current market |   string |   No |
+| notifications_enabled | does the user who's accessing this API have notifications enabled for this specific question/market? |   Boolean |   No |
+| question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
+| question_id | the unique identifier for the question text |   string |   Yes |
+| Rewards | the array of potential rewards for users who provide liquidity to smaller markets |   Array/jsonb |   No |
+| seconds_delay  | seconds of match delay for in-game trade (sports)|  int4 |   No |
+| Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
+| taker_base_fee | Always 0, but it showed the fee applied to market takers (people who take away liquidity by buying and holding positions) |   int4 |   No |
+| token_outcome  | (Deprecated) A string list of the possible outcomes. Ex: Yes, No |   string |   No |
+| token_price  | A string list of the corresponding price from token_outcome col. ex: if token_outcome is Yes, No - and token_price = 0.6, 0.4. Then Yes = $0.6. |   string |   No |
+| token_token_id  | A string list of the respective token ids of the outcomes |   string |   No |
+| token_winner  | A string list on if the respective outcome/token_id has been concluded and is declared a winner (all False means still ongoing) |  string |   No |
+| tokens  | jsonb column of the different tokens within a market/question_id, including the potential outcomes, price, token_id, and if they are the market winner |   Array/jsonb |   No |
+
+
 
 
