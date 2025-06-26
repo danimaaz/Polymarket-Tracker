@@ -227,6 +227,6 @@ The Python tools used to make this dashboard were:
 | no_price | the lowest ask price of the 'no' outcome in a particular market (if it is a sports game, it'll be the price of the first listed outcome in the outcomes column) |   float |   No |
 | yes_price | the lowest ask price of the 'yes' outcome in a particular market (if it is a sports game, it'll be the price of the second listed outcome in the outcomes column) |   float |   No |
 | yes_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1  |   int |   No |
-| no_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1   |   float |   No |
+| no_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1   |   int |   No |
 | is_arbitrage| Indicator function, returns 1 if the yes_price + no_price are less than $1 (i.e. arbitrage = True), otherwise, returns 0. |   int |   No |
 
