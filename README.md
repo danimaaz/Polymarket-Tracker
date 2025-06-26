@@ -124,7 +124,10 @@ The Python tools used to make this dashboard were:
 
  # 1 - SQL Table Documentation
 
-|  Column Name      | Description   | Data Type  | Unique/Primary Key? |
+ 
+#polymarket_market_data_full
+
+|  Column Name      | Description   | Data Type  | Unique Key? |
 |:-------------:|:-------------:| :---------:| :---------:|
 | accepting_order_timestamp      | When the specific market accepted orders for the first time (denoted in Unixtime)| bigint | No |
 | accepting_orders      | Is the market currently accepting orders?     |   boolean |   No |
@@ -159,6 +162,59 @@ The Python tools used to make this dashboard were:
 | token_winner  | A string list on if the respective outcome/token_id has been concluded and is declared a winner (all False means still ongoing) |  string |   No |
 | tokens  | jsonb column of the different tokens within a market/question_id, including the potential outcomes, price, token_id, and if they are the market winner |   Array/jsonb |   No |
 
+#polymarket_orderbooks_data_full
 
+|  Column Name      | Description   | Data Type  | Unique Key |
+| token_id  | A unique identifier of the question_id + outcome combination. |   string |   Yes |
+| market  | A unique identifier of the question_id/market (also called market_id). |   string |   No |
+| asset_id  | Id of the asset/token (usually the same as token_id) |   string |   No |
+| timestamp_unix | the precise timestamp the specific orderbook was pulled |   bigint |   Yes |
+| retrieve_time | the timestamp the initial request to pull the orderbook was made (same for all markets pulled during the same run) |   bigint |   No |
+| side  | bid or ask side |   string |   Yes |
+| orderbook  | Full jsonb/dictionary of the various price points and the respective volume in the orderbook. |   jsonb |   No |
+| hash  | Hash summary of the orderbook content. |   string |   No |
 
+#Binance_orderbook_Full
+
+|  Column Name      | Description   | Data Type  | Unique Key |
+| currency_pair  | The currency pair that is being monitored on Binance (for our purposes, it is always BTCUSDC) |   string |   Yes |
+| retrieve_time   | The time which the initial orderbook pull was requested (unixtime format) |   bigint |   Yes |
+| side | bid/ask side of the market |   string |   Yes |
+| price  | The price of the current order entry in the orderbook |   float |   Yes |
+| volume  | The total volume (in BTC) of the orders in that particular entry of the orderbook |   float |   No |
+
+#price_tracker_table
+
+|  Column Name      | Description   | Data Type  | Unique Key |
+| question_id | the unique identifier for the question text |   string |   Yes |
+| question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
+| Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
+| outcome | the outcome (usually binary, yes/no, sports team, athlete, etc) |   string |   No |
+| winner | Is this outcome the 'winner' of the market at the time of querying? |   Boolean |   No |
+| token_id  | A unique identifier of the question_id + outcome combination. |   string |   Yes |
+| market_id  | A unique identifier of the general market (slightly different from the question_id) |   string |   No |
+| asset_id  | A unique identifier of the question_id + outcome combination (same as token_id) |   string |   No |
+| retrieve_time | the timestamp the initial request to pull the orderbook was made (same for all markets pulled during the same run) |   timestamp |   Yes |
+| ask_price | the lowest ask price (in USD) of the token in question |   float |   No |
+| bid_price | the highest bid price (in USD) of the token in question |   float |   No |
+| market_spread| the difference between the ask_price & bid_price columns |   float |   No |
+| bid_shares | the total volume of shares available on the bid side of the orderbook |   int |   No |
+| ask_shares | the total volume of shares available on the ask side of the orderbook |   int |   No |
+| list_price | the middle point between the lowest ask price and highest bid price in the orderbook |   float |   No |
+
+#Detecting_arbitrage_table
+
+|  Column Name      | Description   | Data Type  | Unique Key |
+| question_id | the unique identifier for the question text |   string |   Yes |
+| question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
+| Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
+| market_id  | A unique identifier of the general market (slightly different from the question_id) |   string |   No |
+| retrieve_time | the timestamp the initial request to pull the orderbook was made (same for all markets pulled during the same run) |   timestamp |   Yes |
+| market_end_date | the timestamp at which the market is planned to close at |   timestamp |   No |
+| outcomes | the possible outcomes to this market (usually binary, yes/no, team 1 vs team 2, etc, occasionally three outcomes if draws are permitted) |   Array |   No |
+| no_price | the lowest ask price of the 'no' outcome in a particular market (if it is a sports game, it'll be the price of the first listed outcome in the outcomes column) |   float |   No |
+| yes_price | the lowest ask price of the 'yes' outcome in a particular market (if it is a sports game, it'll be the price of the second listed outcome in the outcomes column) |   float |   No |
+| yes_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1  |   int |   No |
+| no_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1   |   float |   No |
+| is_arbitrage| Indicator function, returns 1 if the yes_price + no_price are less than $1 (i.e. arbitrage = True), otherwise, returns 0. |   int |   No |
 
