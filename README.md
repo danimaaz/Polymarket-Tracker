@@ -125,7 +125,7 @@ The Python tools used to make this dashboard were:
  # 1 - SQL Table Documentation
 
  
-#polymarket_market_data_full
+# polymarket_market_data_full
 
 |  Column Name      | Description   | Data Type  | Unique Key? |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -162,7 +162,7 @@ The Python tools used to make this dashboard were:
 | token_winner  | A string list on if the respective outcome/token_id has been concluded and is declared a winner (all False means still ongoing) |  string |   No |
 | tokens  | jsonb column of the different tokens within a market/question_id, including the potential outcomes, price, token_id, and if they are the market winner |   Array/jsonb |   No |
 
-#polymarket_orderbooks_data_full
+# polymarket_orderbooks_data_full
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 | token_id  | A unique identifier of the question_id + outcome combination. |   string |   Yes |
@@ -174,7 +174,7 @@ The Python tools used to make this dashboard were:
 | orderbook  | Full jsonb/dictionary of the various price points and the respective volume in the orderbook. |   jsonb |   No |
 | hash  | Hash summary of the orderbook content. |   string |   No |
 
-#Binance_orderbook_Full
+# Binance_orderbook_Full
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 | currency_pair  | The currency pair that is being monitored on Binance (for our purposes, it is always BTCUSDC) |   string |   Yes |
@@ -202,7 +202,7 @@ The Python tools used to make this dashboard were:
 | ask_shares | the total volume of shares available on the ask side of the orderbook |   int |   No |
 | list_price | the middle point between the lowest ask price and highest bid price in the orderbook |   float |   No |
 
-#Detecting_arbitrage_table
+# Detecting_arbitrage_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 | question_id | the unique identifier for the question text |   string |   Yes |
