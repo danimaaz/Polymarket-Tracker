@@ -165,7 +165,7 @@ The Python tools used to make this dashboard were:
 
 
 
-# polymarket_orderbooks_data_full
+# orderbooks_data_full
 
 
 
@@ -179,6 +179,27 @@ The Python tools used to make this dashboard were:
 | side  | bid or ask side |   string |   Yes |
 | orderbook  | Full jsonb/dictionary of the various price points and the respective volume in the orderbook. |   jsonb |   No |
 | hash  | Hash summary of the orderbook content. |   string |   No |
+
+
+# polymarket_orders_full
+
+|  Column Name      | Description   | Data Type  | Unique Key |
+|:-------------:|:-------------:| :---------:| :---------:|
+| question_id | the unique identifier for the question text |   string |   Yes |
+| question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
+| Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
+| outcome | Which outcome of the market are we representing? (Yes/No, Team1/Team2, etc) |   Array |   No |
+| winner | Is this outcome the 'winner' of the market at the time of querying? |   Boolean |   No |
+| token_id  | A unique identifier of the question_id + outcome combination. |   string |   Yes |
+| market_id  | A unique identifier of the general market (slightly different from the question_id) |   string |   No |
+| asset_id  | A unique identifier of the question_id + outcome combination (same as token_id) |   string |   No |
+| orderbook_timestamp | the timestamp the orderbook was pulled at (usually a bit later than the retrieve_time) |   timestamp |   Yes |
+| retrieve_time | the timestamp the initial request to pull the orderbook was made (same for all markets pulled during the same run) |   timestamp |   Yes |
+| market_end_date | the timestamp at which the market is planned to close |   timestamp |   No |
+| side  | bid or ask side |   string |   Yes |
+| price  | the price of the orderbook entry |   float |   Yes |
+| shares  | the number of shares in this particular orderbook entry |   float |   Yes |
+
 
 
 # Binance_orderbook_Full
