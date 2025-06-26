@@ -162,9 +162,15 @@ The Python tools used to make this dashboard were:
 | token_winner  | A string list on if the respective outcome/token_id has been concluded and is declared a winner (all False means still ongoing) |  string |   No |
 | tokens  | jsonb column of the different tokens within a market/question_id, including the potential outcomes, price, token_id, and if they are the market winner |   Array/jsonb |   No |
 
+
+
+
 # polymarket_orderbooks_data_full
 
+
+
 |  Column Name      | Description   | Data Type  | Unique Key |
+|:-------------:|:-------------:| :---------:| :---------:|
 | token_id  | A unique identifier of the question_id + outcome combination. |   string |   Yes |
 | market  | A unique identifier of the question_id/market (also called market_id). |   string |   No |
 | asset_id  | Id of the asset/token (usually the same as token_id) |   string |   No |
@@ -174,18 +180,23 @@ The Python tools used to make this dashboard were:
 | orderbook  | Full jsonb/dictionary of the various price points and the respective volume in the orderbook. |   jsonb |   No |
 | hash  | Hash summary of the orderbook content. |   string |   No |
 
+
 # Binance_orderbook_Full
 
-|  Column Name      | Description   | Data Type  | Unique Key |
+
+|  Column Name     | Description   | Data Type  | Unique Key |
+|:-------------:|:-------------:| :---------:| :---------:|
 | currency_pair  | The currency pair that is being monitored on Binance (for our purposes, it is always BTCUSDC) |   string |   Yes |
 | retrieve_time   | The time which the initial orderbook pull was requested (unixtime format) |   bigint |   Yes |
 | side | bid/ask side of the market |   string |   Yes |
 | price  | The price of the current order entry in the orderbook |   float |   Yes |
 | volume  | The total volume (in BTC) of the orders in that particular entry of the orderbook |   float |   No |
 
+
 #price_tracker_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
+|:-------------:|:-------------:| :---------:| :---------:|
 | question_id | the unique identifier for the question text |   string |   Yes |
 | question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
 | Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
@@ -205,6 +216,7 @@ The Python tools used to make this dashboard were:
 # Detecting_arbitrage_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
+|:-------------:|:-------------:| :---------:| :---------:|
 | question_id | the unique identifier for the question text |   string |   Yes |
 | question | the question the market is asking (i.e. who will win X game, will bitcoin reach Y price, etc) |   string |   No |
 | Tags | the array of various Tags/topics that apply to a specific question_id (ex: sports, bitcoin, politics, etc) |   Array/jsonb |   No |
