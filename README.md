@@ -198,7 +198,7 @@ The Python tools used to make this dashboard were:
 | market_end_date | the timestamp at which the market is planned to close |   timestamp |   No |
 | side  | bid or ask side |   string |   Yes |
 | price  | the price of the orderbook entry |   float |   Yes |
-| shares  | the number of shares in this particular orderbook entry |   float |   Yes |
+| shares  | the number of shares in this particular orderbook entry |   integer |   Yes |
 
 
 
@@ -214,7 +214,7 @@ The Python tools used to make this dashboard were:
 | volume  | The total volume (in BTC) of the orders in that particular entry of the orderbook |   float |   No |
 
 
-#price_tracker_table
+# price_tracker_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -250,4 +250,15 @@ The Python tools used to make this dashboard were:
 | yes_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1  |   int |   No |
 | no_instances | Sanity check column - counting the number of yes/no market instances - to prevent duplication or grabbing the wrong rows. This should always be 1   |   int |   No |
 | is_arbitrage| Indicator function, returns 1 if the yes_price + no_price are less than $1 (i.e. arbitrage = True), otherwise, returns 0. |   int |   No |
+
+
+
+The Database Entity relationship diagram can be viewed below:
+
+![DB Relationship Diagram](https://github.com/user-attachments/assets/85047f2a-9dac-4264-bba1-0d1bc03d06ad)
+
+
+
+
+# 2 - How to use / set up (Step-By-Step):
 
