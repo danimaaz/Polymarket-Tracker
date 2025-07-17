@@ -1,0 +1,16 @@
+py-clob-client
+python-dotenv
+pandas
+pendulum==2.1.2
+Flask-Session==0.4.0
+apache-airflow==2.7.3 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.7.3/constraints-3.10.txt
+connexion[swagger-ui]==2.14.1
+SQLAlchemy>=1.4,<2.0
+requests>=2.25
+psycopg2-binary>=2.9,<3.0
+pyarrow
+apache-airflow-providers-postgres
+binance-connector
+streamlit
+matplotlib
+packaging
