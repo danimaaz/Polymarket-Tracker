@@ -1,0 +1,129 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: airflow-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/postgres_data:/var/lib/postgresql/data
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/output:/import
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  airflow-init:
+    build: .
+    container_name: airflow-init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        airflow db init
+        airflow users create \
+          --username admin \
+          --password admin \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@example.com
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/dags:/opt/airflow/dags
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/logs:/opt/airflow/logs
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/plugins:/opt/airflow/plugins
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/output:/opt/airflow/output
+
+  airflow-webserver:
+    build: .
+    container_name: airflow-webserver
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    ports:
+      - "8080:8080"
+    command: ["airflow", "webserver"]
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/dags:/opt/airflow/dags
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/logs:/opt/airflow/logs
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/plugins:/opt/airflow/plugins
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/output:/opt/airflow/output
+
+  airflow-scheduler:
+    build: .
+    container_name: airflow-scheduler
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    command: ["airflow", "scheduler"]
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/dags:/opt/airflow/dags
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/logs:/opt/airflow/logs
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/plugins:/opt/airflow/plugins
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/output:/opt/airflow/output
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/pgadmin_data:/var/lib/pgadmin
+  streamlit:
+    image: python:3.11-slim
+    container_name: streamlit
+    working_dir: /app
+    environment: 
+      - DATABASE_URL=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    ports:
+      - "8501:8501"
+    volumes:
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env:/app
+      - /c/Users/danik/Data_Engineering_Project/polymarket_data_testing_env/wait-for-postgres.sh:/app/wait-for-postgres.sh
+    command: >
+      bash -c "apt-get update && apt-get install -y postgresql-client &&
+              pip install -r requirements.txt &&
+              ./wait-for-postgres.sh postgres streamlit run dags/graphing_sentiment_scores.py"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
