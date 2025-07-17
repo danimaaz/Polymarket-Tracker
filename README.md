@@ -8,31 +8,31 @@ A Data Engineering project. Using the Polymarket and Binance APIs to pull data i
 The purpose of this data engineering project is to provide users a centralized view on *what* is going on in Polymarket at any given time. Users are able to pull Polymarket data themselves to quickly compare and contrast what is happening in various betting markets and infer their own decisions based on their analysis. Furthermore, this pipeline is also able to provide a rough sentiment analysis on the general Cryptomarket. More specifically, by analyzing Polymarket's betting activity on the future movements of Bitcoin, we can infer the general market sentiment for Bitcoin/Crypto across various time frames. This pipeline provides users with *automated data collection*, PostgreSQL-based storage and transformation, and an exploratory dashboard for exploring Crypto sentiment, Arbitrage opportunities, and price spreads. 
 
 
-## Features Outline
+# Features Outline
 
-# 1 - The ETL Pipeline: 
+## 1 - The ETL Pipeline: 
 
-## Architecture Diagram:
+### Architecture Diagram:
 ![data architecture june 15](https://github.com/user-attachments/assets/299e5675-d50b-42c3-9a7f-525d31617ee6)
 
 
 Above, you can see the overall project flow. Below, I have detailed all the relevant steps:
 
-#Step I - Extraction
+#### Step I - Extraction
 
 The first step was *extracting* the relevant data from the Binance and Polymarket APIs. These are both public APIs created and managed by the enterprises, respectively. I used a Python Script to extract the data.
 
-#Step II - Transform
+#### Step II - Transform
 
 The second step was transforming the data. After the initial Python script to extract the raw data from Binance and Polymarket was created, I used Airflow as an orchestration tool. The purpose of Airflow is to establish a Directed Acyclic Graph (DAG). The purpose of a DAG is to define specifically which tasks should be run in which order. Within the DAG I specified, I ran both Python and SQL transformations on the raw data, so I could create numerous useful tables for the end-user to use.
 
-#Step III - Load
+#### Step III - Load
 
 Finally, after the DAG was established, I was ready to load all of the data into PostgreSQL. I used DBeaver to access the database locally on my computer. However, this project can be migrated to cloud storage. 
 
 Once the tables were loaded into my local database, I was then able to create a small visualization layer for the end user to explore the data. For the visualization layer, I used Streamlit. However, users attempting this project can also use other visualization tools, such as Looker and Tableau. I also used Ngrok to host the Streamlit online, while the data is hosted strictly on my local computer. 
 
-# 2 - API Integration
+## 2 - API Integration
 
 What is the purpose of using specifically Binance and Polymarket data? 
 
@@ -40,46 +40,45 @@ The idea for this project initially was to create a rough Bitcoin sentiment grap
 
 I integrated the Binance API data to get real-time data on how the orderbook of BTC USDC is moving. Using that data, I was able to classify whether a particular prediction market is bullish or bearish. 
 
-# 3 - PostgreSQL Storage
+## 3 - PostgreSQL Storage
 
 PostgreSQL is an open-source *relational* database that is being used as this project's data storage layer. It was chosen due to its ability to support the structured data coming from the APIs being used, its ability to handle JSON-type columns, and the low cost associated with it. 
 
 All the raw and transformed data from this project gets loaded onto a *local* PostgreSQL storage container. 
 
-## Stored Tables Overview
+### Stored Tables Overview
 
-Raw Data: 
+**Raw Data:**
 
 The backbone of this project is based on the loading of these three raw tables:
 
-polymarket_market_data_raw: This table is primarily an information table containing details on all the markets, both past and present, listed on Polymarket.
+- _polymarket_market_data_raw_: This table is primarily an information table containing details on all the markets, both past and present, listed on Polymarket.
 
-polymarket_orderbooks_data_raw: This table is a *snapshot* in time of all the Orderbooks currently available in Polymarket.
+- _polymarket_orderbooks_data_raw_: This table is a *snapshot* in time of all the Orderbooks currently available in Polymarket.
 
-binance_orderbook_raw: This table is a *snapshot* in time of the BTC USDC orderbook from Binance. 
+- _binance_orderbook_raw_: This table is a *snapshot* in time of the BTC USDC orderbook from Binance. 
 
 
 Using the 3 raw data tables, we can transform them into multiple useful tables for stakeholders to use.
 
-Transformed Data: 
+**Transformed Data:** 
+
+- _polymarket_market_data_full_: A functional copy of polymarket_market_data_raw where the columns are converted into usable SQL formats.
+
+- _polymarket_orderbooks_data_full_: A functional copy of polymarket_orderbooks_data_raw where the columns are converted into usable SQL formats.
+
+- _binance_orderbook_full_: A functional copy of binance_orderbook_raw where the columns are converted into usable SQL formats.
+
+- _polymarket_orders_full_: Joining the Polymarket_market_data (information table) with the Polymarket orders data. This way, people can query only one table to get information on the orderbook and immediately see the important information on the market. 
+
+- _price_tracker_table_: This table simplifies the Polymarket orderbook data from before. Order books tend to have dozens of bid (people who want to buy) and ask (people who want to sell) orders. The price tracker table simplifies this data by returning only 1 row per market per timestamp, where you can easily see what the best bid and ask prices are. 
+
+- _detecting_arbitrage_table_: Given that Polymarket data is a betting market. There are sometimes instances of slight arbitrage. More specifically, when the sum of the prices of an outcome is less than $1, then users can buy all sides of the market and make a guaranteed profit. For example, if there is a particular sports match going on (Ex: Knicks vs Celtics), and the price of wagering the Knicks or Celtics will win is $0.7 and $0.2, respectively, then a user can buy both sides of the market and still come out on top. The return for a winning outcome is $1, which is greater than $0.7 + $0.2. This table tracks all instances of arbitrage opportunities on the market at the time the Data is pulled. 
+
+The specific relations between each table and the documentation on the columns will be included in _[SQL Table Documentation](https://github.com/danimaaz/Polymarket_DE_Project/edit/main/README.md#1---sql-table-documentation)_ section of the project. 
 
 
-polymarket_market_data_full: A functional copy of polymarket_market_data_raw where the columns are converted into usable SQL formats.
-
-polymarket_orderbooks_data_full: A functional copy of polymarket_orderbooks_data_raw where the columns are converted into usable SQL formats.
-
-binance_orderbook_full: A functional copy of binance_orderbook_raw where the columns are converted into usable SQL formats.
-
-polymarket_orders_full: Joining the Polymarket_market_data (information table) with the Polymarket orders data. This way, people can query only one table to get information on the orderbook and immediately see the important information on the market. 
-
-price_tracker_table: This table simplifies the Polymarket orderbook data from before. Order books tend to have dozens of bid (people who want to buy) and ask (people who want to sell) orders. The price tracker table simplifies this data by returning only 1 row per market per timestamp, where you can easily see what the best bid and ask prices are. 
-
-detecting_arbitrage_table: Given that Polymarket data is a betting market. There are sometimes instances of slight arbitrage. More specifically, when the sum of the prices of an outcome is less than $1, then users can buy all sides of the market and make a guaranteed profit. For example, if there is a particular sports match going on (Ex: Knicks vs Celtics), and the price of wagering the Knicks or Celtics will win is $0.7 and $0.2, respectively, then a user can buy both sides of the market and still come out on top. The return for a winning outcome is $1, which is greater than $0.7 + $0.2. This table tracks all instances of arbitrage opportunities on the market at the time the Data is pulled. 
-
-The specific relations between each table and the documentation on the columns will be included in ____ file of the project. 
-
-
-# 3 - Dockerized Environment
+## 4 - Dockerized Environment
 
 This project is containerized using Docker Compose. Containerization refers to the process of packaging applications and their corresponding dependencies into a virtual environment. The purpose of containerizing a particular project is to mitigate the risk that the project will not work in one environment but will in another (e.g., the project might work on my computer but not another person's computer). 
 
@@ -89,7 +88,7 @@ The Dockerized environment for this project contains the following components:
  - PostgreSQL: A database container that stores all the raw and transformed data from the relevant APIs
  - Streamlit: A frontend service that enables us to launch the Polymarket Exploratory dashboard via a web interface. 
 
-# 4 - Streamlit Integration
+## 5 - Streamlit Integration
 
 Finally, to complete the end-to-end nature of this project, this project also includes a visualization element in Streamlit. More specifically, the dashboard provides a quick view for visualizing Bitcoin market sentiment and prediction market analytics. A snapshot of the dashboard is below:
 
@@ -104,28 +103,32 @@ The dashboard is split into 5 sections:
    - Then, we calculate what the Bullish and Bearish scores are using the following formula (note that the P(Reaching Target Price) is assumed to be the current price on Polymarket of BTC hitting the target price):
      <img width="508" alt="image" src="https://github.com/user-attachments/assets/e4fb6096-7bda-41e8-b38c-2a5bf6fa795c" />
 
-    - Afterwards, we calculate the overall sentiment score for a particular time-frame using the following formula:
+    - Afterwards, we calculate the overall sentiment score for a particular time frame using the following formula:
       <img width="445" alt="image" src="https://github.com/user-attachments/assets/da7da360-25b8-45f5-8d4a-f16a700c4316" />
     - Note that the default sentiment score starts at 50 because 50 is defined to be perfectly neutral in our gauge. A score of 1 is defined to be extremely bearish, while 100 is defined to be extremely Bullish. 
 
 
- 
 - **Arbitrage Opportunities**: This displays markets at the time of the latest refresh with mispriced markets. More specifically, if the price of the two outcomes (usually defined as Yes and No) is less than $1. Then, there is an arbitrage opportunity as users can buy both sides of the market and make a guaranteed profit.
+  
 - **Token Movers**: This view ranks the various markets (also labeled as tokens) wth the largest price movements since the last refresh.
+  
 - **Market Spreads**: This view shows the markets with the largest bid-ask spreads. Large bid-ask spreads are usually an indicator of illiquidity or extreme uncertainty.
+  
 - **Closing Markets**: This view displays markets that are set to conclude soon due to their time sensitivity.
 
 The Python tools used to make this dashboard were:
+
 - **Matplotlib**: A common  tool that was used to create the Sentiment graph.
+ 
 - **Pandas**: Used on the back-end for data-processing as well as plotting the interactive tables seen on the dashboard.
 
   
  ## Documentation
 
- # 1 - SQL Table Documentation
+ ### 1 - SQL Table Documentation
 
  
-# polymarket_market_data_full
+#### polymarket_market_data_full
 
 |  Column Name      | Description   | Data Type  | Unique Key? |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -165,7 +168,7 @@ The Python tools used to make this dashboard were:
 
 
 
-# orderbooks_data_full
+#### orderbooks_data_full
 
 
 
@@ -181,7 +184,7 @@ The Python tools used to make this dashboard were:
 | hash  | Hash summary of the orderbook content. |   string |   No |
 
 
-# polymarket_orders_full
+#### polymarket_orders_full
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -202,7 +205,7 @@ The Python tools used to make this dashboard were:
 
 
 
-# Binance_orderbook_Full
+#### Binance_orderbook_Full
 
 
 |  Column Name     | Description   | Data Type  | Unique Key |
@@ -214,7 +217,7 @@ The Python tools used to make this dashboard were:
 | volume  | The total volume (in BTC) of the orders in that particular entry of the orderbook |   float |   No |
 
 
-# price_tracker_table
+#### price_tracker_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -234,7 +237,7 @@ The Python tools used to make this dashboard were:
 | ask_shares | the total volume of shares available on the ask side of the orderbook |   int |   No |
 | list_price | the middle point between the lowest ask price and highest bid price in the orderbook |   float |   No |
 
-# Detecting_arbitrage_table
+#### Detecting_arbitrage_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -252,7 +255,7 @@ The Python tools used to make this dashboard were:
 | is_arbitrage| Indicator function, returns 1 if the yes_price + no_price are less than $1 (i.e. arbitrage = True), otherwise, returns 0. |   int |   No |
 
 
-
+#### Database Entity Relations
 The Database Entity relationship diagram can be viewed below:
 
 ![DB Relationship Diagram](https://github.com/user-attachments/assets/85047f2a-9dac-4264-bba1-0d1bc03d06ad)
@@ -260,5 +263,5 @@ The Database Entity relationship diagram can be viewed below:
 
 
 
-# 2 - How to use / set up (Step-By-Step):
+## 2 - How to use/set up (Step-By-Step):
 
