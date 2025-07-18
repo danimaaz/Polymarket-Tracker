@@ -265,3 +265,49 @@ The Database Entity relationship diagram can be viewed below:
 
 ## 2 - How to use/set up (Step-By-Step):
 
+### Prerequisites
+
+To set this project up on your local computer, you will need:
+
+[Python 3.8+](https://www.python.org/downloads/)
+
+[Docker](https://www.docker.com/products/docker-desktop/)
+
+[GitBash](https://git-scm.com/downloads)
+
+[DB Beaver](https://dbeaver.io/download/)
+
+[VS Code](https://code.visualstudio.com/download)
+
+### Step 1: Clone the Repository (on GitBash)
+
+
+```
+git clone https://github.com/danimaaz/Polymarket_DE_Project/edit/main/README.md
+cd Polymarket_DE_Project
+```
+If you have downloaded the project as a zip, you can simply extract it and go to the corresponding directory on Gitbash through:
+
+```
+cd /c/Users/<your_custom_path>/Polymarket_DE_Project
+```
+
+### Step 2: Run the setup commands
+
+These bash commands will shut down any old containers, and rebuild the Docker environment, and start the relevant services (PostgreSQL, Airflow, etc) 
+
+```
+docker-compose down --volumes
+
+docker-compose build --no-cache
+
+docker-compose run airflow airflow db init
+
+docker-compose up
+```
+
+Do not forget to *open* Docker Desktop to initialize the Docker container. As well as to leave the bash window open and running. 
+
+### Step 4
+ 
+
