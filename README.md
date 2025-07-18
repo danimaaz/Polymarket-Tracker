@@ -41,7 +41,7 @@ PostgreSQL is an open-source *relational* database that is being used as this pr
 
 All the raw and transformed data from this project gets loaded onto a *local* PostgreSQL storage container. 
 
-### Stored Tables Overview
+### i -  Stored Tables Overview
 
 **Raw Data:**
 
