@@ -118,12 +118,12 @@ The Python tools used to make this dashboard were:
 - **Pandas**: Used on the back-end for data-processing as well as plotting the interactive tables seen on the dashboard.
 
   
- ## Documentation
+ # Documentation
 
- ### 1 - SQL Table Documentation
+ ## 1 - SQL Table Documentation
 
  
-#### polymarket_market_data_full
+### polymarket_market_data_full
 
 |  Column Name      | Description   | Data Type  | Unique Key? |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -163,7 +163,7 @@ The Python tools used to make this dashboard were:
 
 
 
-#### orderbooks_data_full
+### orderbooks_data_full
 
 
 
@@ -179,7 +179,7 @@ The Python tools used to make this dashboard were:
 | hash  | Hash summary of the orderbook content. |   string |   No |
 
 
-#### polymarket_orders_full
+### polymarket_orders_full
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -200,7 +200,7 @@ The Python tools used to make this dashboard were:
 
 
 
-#### Binance_orderbook_Full
+### Binance_orderbook_Full
 
 
 |  Column Name     | Description   | Data Type  | Unique Key |
@@ -212,7 +212,7 @@ The Python tools used to make this dashboard were:
 | volume  | The total volume (in BTC) of the orders in that particular entry of the orderbook |   float |   No |
 
 
-#### price_tracker_table
+### price_tracker_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -232,7 +232,7 @@ The Python tools used to make this dashboard were:
 | ask_shares | the total volume of shares available on the ask side of the orderbook |   int |   No |
 | list_price | the middle point between the lowest ask price and highest bid price in the orderbook |   float |   No |
 
-#### Detecting_arbitrage_table
+### Detecting_arbitrage_table
 
 |  Column Name      | Description   | Data Type  | Unique Key |
 |:-------------:|:-------------:| :---------:| :---------:|
@@ -250,7 +250,7 @@ The Python tools used to make this dashboard were:
 | is_arbitrage| Indicator function, returns 1 if the yes_price + no_price are less than $1 (i.e. arbitrage = True), otherwise, returns 0. |   int |   No |
 
 
-#### Database Entity Relations
+### Database Entity Relations
 The Database Entity relationship diagram can be viewed below:
 
 ![DB Relationship Diagram](https://github.com/user-attachments/assets/85047f2a-9dac-4264-bba1-0d1bc03d06ad)
@@ -324,7 +324,7 @@ The Streamlit dashboard will look like this:
 It will automatically re-run whenever a DAG is finished updating with the latest data. 
 
 
-## Next Iterations
+## Next Steps
 
 The next iterations of this project will likely incorporate more betting markets. Finding arbitrage opportunities in one market is quite simple. However, if I can extend this project to numerous betting markets, I may be able to create a tool that quickly enables users to make a trade whenever they notice an arbitrage opportunity. 
 
