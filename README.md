@@ -70,7 +70,7 @@ Using the 3 raw data tables, we can transform them into multiple useful tables f
 
 - _detecting_arbitrage_table_: Given that Polymarket data is a betting market. There are sometimes instances of slight arbitrage. More specifically, when the sum of the prices of an outcome is less than $1, then users can buy all sides of the market and make a guaranteed profit. For example, if there is a particular sports match going on (Ex: Knicks vs Celtics), and the price of wagering the Knicks or Celtics will win is $0.7 and $0.2, respectively, then a user can buy both sides of the market and still come out on top. The return for a winning outcome is $1, which is greater than $0.7 + $0.2. This table tracks all instances of arbitrage opportunities on the market at the time the Data is pulled. 
 
-The specific relations between each table and the documentation on the columns will be included in _[SQL Table Documentation](https://github.com/danimaaz/Polymarket_DE_Project/edit/main/README.md#1---sql-table-documentation)_ section of the project. 
+The specific relations between each table and the documentation on the columns will be included in _[SQL Table Documentation](https://github.com/danimaaz/Polymarket-Tracker/edit/main/README.md#1---sql-table-documentation)_ section of the project. 
 
 
 ## 4 - Dockerized Environment
@@ -278,13 +278,13 @@ To set this project up on your local computer, you will need:
 
 
 ```
-git clone https://github.com/danimaaz/Polymarket_DE_Project/edit/main/README.md
-cd Polymarket_DE_Project
+git clone https://github.com/danimaaz/Polymarket-Tracker/edit/main/README.md
+cd Polymarket-Tracker
 ```
 If you have downloaded the project as a zip, you can simply extract it and go to the corresponding directory on Gitbash through:
 
 ```
-cd /c/Users/<your_custom_path>/Polymarket_DE_Project
+cd /c/Users/<your_custom_path>/Polymarket-Tracker
 ```
 
 ### Step 2: Run the setup commands
