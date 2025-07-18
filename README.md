@@ -308,6 +308,29 @@ docker-compose up
 
 Do not forget to *open* Docker Desktop to initialize the Docker container. As well as to leave the bash window open and running. 
 
-### Step 4
- 
+### Step 3: Access the relevant services
+
+Once the containers are up and running, you can visit your browser and visit:
+
+- Airflow UI: http://localhost:8080
+  - Login with admin / admin
+- Streamlit Dashboard: http://localhost:8501
+
+When you open Airflow, you should see a screen similar to this:
+
+<img width="2519" height="349" alt="image" src="https://github.com/user-attachments/assets/64fd493b-efa7-4225-a521-e6df9d6d6614" />
+
+The DAG will run manually 1x a day by default. However, you can trigger default runs if you wish. 
+
+The Streamlit dashboard will look like this:
+
+<img width="2520" height="1214" alt="image" src="https://github.com/user-attachments/assets/205b1525-a06c-446f-9b0c-c835595b901e" />
+
+It will automatically re-run whenever a DAG is finished updating with the latest data. 
+
+
+## Next Iterations
+
+The next iterations of this project will likely incorporate more betting markets. Finding arbitrage opportunities in one market is quite simple. However, if I can extend this project to numerous betting markets, I may be able to create a tool that quickly enables users to make a trade whenever they notice an arbitrage opportunity. 
+
 
